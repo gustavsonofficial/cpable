@@ -1,4 +1,4 @@
-# Step 1: Use a Node.js image to build the React app
+# Step 1: Use Node.js to build the React app
 FROM node:18 as build
 
 # Set the working directory
@@ -16,15 +16,15 @@ COPY . .
 # Build the React app
 RUN npm run build
 
-# Step 2: Use a base image to install Dynatrace OneAgent and serve the app
+# Step 2: Use Nginx to serve the app and install Dynatrace OneAgent
 FROM nginx:alpine
 
 # Install curl for downloading Dynatrace OneAgent
 RUN apk add --no-cache curl
 
 # Set environment variables for Dynatrace OneAgent
-ENV ONEAGENT_INSTALLER_SCRIPT_URL="$_ONEAGENT_INSTALLER_SCRIPT_URL"
-ENV ONEAGENT_INSTALLER_DOWNLOAD_TOKEN="$_ONEAGENT_INSTALLER_DOWNLOAD_TOKEN"
+ARG ONEAGENT_INSTALLER_SCRIPT_URL
+ARG ONEAGENT_INSTALLER_DOWNLOAD_TOKEN
 
 # Download and install Dynatrace OneAgent
 RUN curl -o Dynatrace-OneAgent.sh "$ONEAGENT_INSTALLER_SCRIPT_URL" && \
