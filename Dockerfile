@@ -1,5 +1,5 @@
 # Step 1: Use Node.js to build the React app
-FROM node:18 as build
+FROM node:18 AS build
 
 # Set the working directory
 WORKDIR /app
@@ -26,8 +26,12 @@ RUN apk add --no-cache curl
 ARG ONEAGENT_INSTALLER_SCRIPT_URL
 ARG ONEAGENT_INSTALLER_DOWNLOAD_TOKEN
 
+# Debugging: Print the values of the arguments
+RUN echo "ONEAGENT_INSTALLER_SCRIPT_URL: $ONEAGENT_INSTALLER_SCRIPT_URL" && \
+    echo "ONEAGENT_INSTALLER_DOWNLOAD_TOKEN: $ONEAGENT_INSTALLER_DOWNLOAD_TOKEN"
+
 # Download and install Dynatrace OneAgent
-RUN curl -o Dynatrace-OneAgent.sh "$ONEAGENT_INSTALLER_SCRIPT_URL&token=$ONEAGENT_INSTALLER_DOWNLOAD_TOKEN" && \
+RUN curl -o Dynatrace-OneAgent.sh "${ONEAGENT_INSTALLER_SCRIPT_URL}&token=${ONEAGENT_INSTALLER_DOWNLOAD_TOKEN}" && \
     chmod +x Dynatrace-OneAgent.sh && \
     ./Dynatrace-OneAgent.sh APP_LOG_CONTENT_ACCESS=1 && \
     rm Dynatrace-OneAgent.sh
