@@ -13,20 +13,20 @@ steps:
     args:
       - build
       - '-t'
-      - 'gcr.io/$PROJECT_ID/react-app-with-dynatrace'
+      - 'gcr.io/$PROJECT_ID/cpable-react-app'
+      # - '--build-arg'
+      # - 'ONEAGENT_INSTALLER_SCRIPT_URL=${_ONEAGENT_INSTALLER_SCRIPT_URL}'
       - '--build-arg'
-      - 'ONEAGENT_INSTALLER_SCRIPT_URL=${_ONEAGENT_INSTALLER_SCRIPT_URL}'
-      - '--build-arg'
-      - 'ONEAGENT_INSTALLER_DOWNLOAD_TOKEN=${_ONEAGENT_INSTALLER_DOWNLOAD_TOKEN}'
+      # - 'ONEAGENT_INSTALLER_DOWNLOAD_TOKEN=${_ONEAGENT_INSTALLER_DOWNLOAD_TOKEN}'
       - '.'
 
   # Step 3: Push the Docker image to Google Container Registry
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - push
-      - 'gcr.io/$PROJECT_ID/react-app-with-dynatrace'
+      - 'gcr.io/$PROJECT_ID/cpable-react-app'
 
 images:
-  - 'gcr.io/$PROJECT_ID/react-app-with-dynatrace'
+  - 'gcr.io/$PROJECT_ID/cpable-react-app'
 
 logsBucket: gs://cpable-log-bucket
