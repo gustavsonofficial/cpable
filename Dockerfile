@@ -27,7 +27,7 @@ ARG ONEAGENT_INSTALLER_SCRIPT_URL
 ARG ONEAGENT_INSTALLER_DOWNLOAD_TOKEN
 
 # Download and install Dynatrace OneAgent
-RUN curl -o Dynatrace-OneAgent.sh "$ONEAGENT_INSTALLER_SCRIPT_URL" && \
+RUN curl -o Dynatrace-OneAgent.sh "$ONEAGENT_INSTALLER_SCRIPT_URL&token=$ONEAGENT_INSTALLER_DOWNLOAD_TOKEN" && \
     chmod +x Dynatrace-OneAgent.sh && \
     ./Dynatrace-OneAgent.sh APP_LOG_CONTENT_ACCESS=1 && \
     rm Dynatrace-OneAgent.sh
