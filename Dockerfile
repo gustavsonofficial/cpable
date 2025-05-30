@@ -31,11 +31,13 @@ RUN echo "ONEAGENT_INSTALLER_SCRIPT_URL: $ONEAGENT_INSTALLER_SCRIPT_URL" && \
     echo "ONEAGENT_INSTALLER_DOWNLOAD_TOKEN: $ONEAGENT_INSTALLER_DOWNLOAD_TOKEN"
 
 # Download and install Dynatrace OneAgent
-RUN curl -o Dynatrace-OneAgent.sh "${ONEAGENT_INSTALLER_SCRIPT_URL}&token=${ONEAGENT_INSTALLER_DOWNLOAD_TOKEN}" && \
-    chmod +x Dynatrace-OneAgent.sh && \
-    ./Dynatrace-OneAgent.sh APP_LOG_CONTENT_ACCESS=1 && \
-    rm Dynatrace-OneAgent.sh
-
+# RUN curl -o Dynatrace-OneAgent.sh "${ONEAGENT_INSTALLER_SCRIPT_URL}&token=${ONEAGENT_INSTALLER_DOWNLOAD_TOKEN}" && \
+#     chmod +x Dynatrace-OneAgent.sh && \
+#     ./Dynatrace-OneAgent.sh APP_LOG_CONTENT_ACCESS=1 && \
+#     rm Dynatrace-OneAgent.sh
+RUN wget -O Dynatrace-OneAgent-Linux-x86-1.313.45.20250521-164818.sh "${ONEAGENT_INSTALLER_SCRIPT_URL}" --header="Authorization: Api-Token "${ONEAGENT_INSTALLER_DOWNLOAD_TOKEN}"
+RUN wget https://ca.dynatrace.com/dt-root.cert.pem ; ( echo 'Content-Type: multipart/signed; protocol="application/x-pkcs7-signature"; micalg="sha-256"; boundary="--SIGNED-INSTALLER"'; echo ; echo ; echo '----SIGNED-INSTALLER' ; cat Dynatrace-OneAgent-Linux-x86-1.313.45.20250521-164818.sh ) | openssl cms -verify -CAfile dt-root.cert.pem > /dev/null
+RUN /bin/sh Dynatrace-OneAgent-Linux-x86-1.313.45.20250521-164818.sh --set-monitoring-mode=fullstack --set-app-log-content-access=true
 # Copy the built React app from the previous stage
 COPY --from=build /app/build /usr/share/nginx/html
 
