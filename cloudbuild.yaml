@@ -29,4 +29,4 @@ steps:
 images:
   - 'gcr.io/$PROJECT_ID/react-app-with-dynatrace'
 
-logsBucket: gs://application-logs-bucket
+logsBucket: gs://cpable-log-bucket
