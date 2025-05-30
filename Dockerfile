@@ -19,8 +19,9 @@ RUN npm run build
 # Step 2: Use Nginx to serve the app and install Dynatrace OneAgent
 FROM nginx:alpine
 
-# Install curl for downloading Dynatrace OneAgent
-RUN apk add --no-cache curl
+# Install curl and openssl for downloading Dynatrace OneAgent
+RUN apk add --no-cache curl openssl wget
+
 
 # Set environment variables for Dynatrace OneAgent
 ARG ONEAGENT_INSTALLER_SCRIPT_URL
