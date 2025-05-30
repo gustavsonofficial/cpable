@@ -16,7 +16,7 @@ steps:
       - 'gcr.io/$PROJECT_ID/cpable-react-app'
       # - '--build-arg'
       # - 'ONEAGENT_INSTALLER_SCRIPT_URL=${_ONEAGENT_INSTALLER_SCRIPT_URL}'
-      - '--build-arg'
+      #- '--build-arg'
       # - 'ONEAGENT_INSTALLER_DOWNLOAD_TOKEN=${_ONEAGENT_INSTALLER_DOWNLOAD_TOKEN}'
       - '.'
 
