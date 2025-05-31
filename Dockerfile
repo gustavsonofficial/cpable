@@ -10,7 +10,6 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
-# Copy the rest of the application code
 COPY . .
 
 # Build the React app
@@ -19,12 +18,8 @@ RUN npm run build
 # Step 2: Use Nginx to serve the app and install Dynatrace OneAgent
 FROM nginx:stable
 
-# Install curl and openssl for downloading Dynatrace OneAgent
-RUN apt-get update && apt-get install -y \
-    curl \
-    wget \
-    openssl \
-    && rm -rf /var/lib/apt/lists/*
+# Copy the rest of the application code
+COPY --from=build /app/build /usr/share/nginx/html
 
 
 # # Set environment variables for Dynatrace OneAgent
@@ -49,6 +44,8 @@ RUN apt-get update && apt-get install -y \
 
 # Expose port 80
 EXPOSE 80
+
+EXPOSE 8080
 
 # Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
